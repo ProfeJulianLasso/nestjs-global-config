@@ -1,12 +1,20 @@
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Configuration } from '../configs/default.config';
+import { AppService } from '../services/app.service';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({
+          load: [Configuration.getInstance().getConfig],
+          isGlobal: true,
+        }),
+      ],
       controllers: [AppController],
       providers: [AppService],
     }).compile();
